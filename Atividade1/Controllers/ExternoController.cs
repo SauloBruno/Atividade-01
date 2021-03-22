@@ -10,5 +10,30 @@ namespace Atividade1.Controllers
             return View();
         }
         
+        public IActionResult Login()
+        {
+            return View();
+        }
+        
+        public IActionResult Cadastro()
+        {
+            return View();
+        }
+        
+        public IActionResult RecuperarConta()
+        {
+            return View();
+        }
+        
+        public IActionResult TermosUso()
+        {
+            return View();
+        }
+        
+        public IActionResult PoliticaPrivacidade()
+        {
+            return View();
+        }
+        
     }
 }

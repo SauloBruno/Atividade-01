@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="d-flex justify-content-center">
+                
+    <div id="cardDados" class="card" style="width: 18rem;">
+        <div class="card-header">
+            Cadastro
+        </div>
+        <div class="card-body">
+            <form method="post" action="">
+                <div class="form-group">
+                    <label for="cpNome">Informe seu nome:</label>
+                    <input type="text" class="form-control" id="cpNome" name="cpNome" aria-describedby="emailHelp">
+                    
+                    <label for="cpEmail">Informe seu email:</label>
+                    <input type="text" class="form-control" id="cpEmail" name="cpEmail" aria-describedby="emailHelp">
+
+                    <label for="cpData">Data de nascimento:</label>
+                    <input type="text" class="form-control" id="cpData" name="cpData" aria-describedby="emailHelp">
+
+                    <label for="cpSenha">Informe uma Senha:</label>
+                    <input type="text" class="form-control" id="cpSenha" name="cpSenha" aria-describedby="emailHelp">
+                </div>
+                            
+                <button type="button" id="btn" name="btn" class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>
+    </div> 
+                
+</div>
