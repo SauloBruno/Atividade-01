@@ -4,4 +4,9 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\img\53104.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\account-avatar-profile-human-man-user-30448.png" />
+    </ItemGroup>
+
 </Project>

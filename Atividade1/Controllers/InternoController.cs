@@ -10,5 +10,15 @@ namespace Atividade1.Controllers
             return View();
         }
         
+        public IActionResult PainelUsuario()
+        {
+            return View();
+        }
+        
+        public IActionResult Ajuda()
+        {
+            return View();
+        }
+        
     }
 }

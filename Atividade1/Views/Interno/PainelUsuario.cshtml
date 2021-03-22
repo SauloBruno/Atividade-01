@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="d-flex justify-content-center">
+    <div id="cardDados" class="card" style="width: 18rem;">
+        <div class="card-header">
+            Painel de Usuario
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label for="cpEmail">Nome:</label>
+                <input type="text" class="form-control" id="cpEmail" value="*******" name="cpNome" aria-describedby="emailHelp">
+                <a asp-controller="Externo" asp-action="Index">editar</a>
+                <br/>
+                <label for="cpEmail">Data de Nascimento:</label>
+                <input type="text" class="form-control" id="cpData" value="**/**/****" name="cpNome" aria-describedby="emailHelp">
+                <a asp-controller="Externo" asp-action="Index">editar</a>
+                <br/>
+                <label for="cpSenha">Senha:</label>
+                <input type="text" class="form-control" id="cpSenha" value="*******" name="cpSenha" aria-describedby="emailHelp">
+                <a asp-controller="Externo" asp-action="Index">editar</a>
+            </div>
+        </div>
+    </div>
+
+</div>
