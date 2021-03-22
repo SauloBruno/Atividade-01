@@ -20,5 +20,10 @@ namespace Atividade1.Controllers
             return View();
         }
         
+        public IActionResult Sessao()
+        {
+            return View();
+        }
+        
     }
 }

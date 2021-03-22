@@ -9,7 +9,7 @@
             Cadastro
         </div>
         <div class="card-body">
-            <form method="post" action="">
+            <form method="post" asp-controller="Interno" asp-action="Index" >
                 <div class="form-group">
                     <label for="cpNome">Informe seu nome:</label>
                     <input type="text" class="form-control" id="cpNome" name="cpNome" aria-describedby="emailHelp">
@@ -24,7 +24,7 @@
                     <input type="text" class="form-control" id="cpSenha" name="cpSenha" aria-describedby="emailHelp">
                 </div>
                             
-                <button type="button" id="btn" name="btn" class="btn btn-primary">Cadastrar</button>
+                <button type="submit" id="btn" name="btn" class="btn btn-primary">Cadastrar</button>
             </form>
         </div>
     </div> 

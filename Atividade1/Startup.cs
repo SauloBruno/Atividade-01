@@ -51,7 +51,7 @@ namespace Atividade1
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Interno}/{action=Index}/{id?}");
+                    pattern: "{controller=Externo}/{action=Index}/{id?}");
             });
         }
     }

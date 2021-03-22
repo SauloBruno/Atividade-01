@@ -9,7 +9,7 @@
             Login
         </div>
         <div class="card-body">
-            <form method="post" action="">
+            <form method="post" asp-controller="Interno" asp-action="Index" >
                 <div class="form-group">
                     <label for="cpEmail">Email:</label>
                     <input type="text" class="form-control" id="cpEmail" name="cpEmail" aria-describedby="emailHelp">
@@ -18,7 +18,7 @@
                     <input type="text" class="form-control" id="cpSenha" name="cpSenha" aria-describedby="emailHelp">
                 </div>
                             
-                <button type="button" id="btn" name="btn" class="btn btn-primary">Logar</button>
+                <button type="submit" id="btn" name="btn" class="btn btn-primary">Logar</button>
             </form>
         </div>
     </div> 
