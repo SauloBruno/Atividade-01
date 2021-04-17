@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Atividade1.RequestModel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Atividade1.Controllers
 {

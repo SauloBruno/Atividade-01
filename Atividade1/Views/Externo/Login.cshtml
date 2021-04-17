@@ -1,6 +1,29 @@
-﻿@{
+﻿@model Atividade1.ViewModels.Acesso.LoginViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
+
+<div>
+    @if (@TempData["msg-cadastro"] != null)
+    {
+        <p style="text-align: center; color: #218838">@TempData["msg-cadastro"]</p>
+    }
+</div>
+
+<div>
+    @if (@Model.Mensagem != null)
+    {
+        <p style="text-align: center; color: red">@Model.Mensagem</p>
+    }
+</div>
+
+<div>
+    @if (@Model.Erro != null)
+    {
+        <p style="text-align: center; color: red">@Model.Erro</p>
+    }
+</div>
 
 <div class="d-flex justify-content-center">
                 
@@ -9,13 +32,13 @@
             Login
         </div>
         <div class="card-body">
-            <form method="post" asp-controller="Interno" asp-action="Index" >
+            <form method="post" asp-controller="Externo" asp-action="Login" >
                 <div class="form-group">
-                    <label for="cpEmail">Email:</label>
-                    <input type="text" class="form-control" id="cpEmail" name="cpEmail" aria-describedby="emailHelp">
+                    <label for="Email">Email:</label>
+                    <input type="text" class="form-control" id="Email" name="Email" aria-describedby="emailHelp">
 
-                    <label for="cpSenha">Senha:</label>
-                    <input type="text" class="form-control" id="cpSenha" name="cpSenha" aria-describedby="emailHelp">
+                    <label for="Senha">Senha:</label>
+                    <input type="text" class="form-control" id="Senha" name="Senha" aria-describedby="emailHelp">
                 </div>
                             
                 <button type="submit" id="btn" name="btn" class="btn btn-primary">Logar</button>

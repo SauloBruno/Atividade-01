@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Atividade1.Data;
+using Atividade1.Models.Acesso;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +27,18 @@ namespace Atividade1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            
+            services.AddDbContext<DataBaseContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("BuffetDb"))
+            );
+
+            services.AddIdentity<Usuario, Papel>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequiredLength = 8;
+            }).AddEntityFrameworkStores<DataBaseContext>();
+
+            services.AddTransient<AcessoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
