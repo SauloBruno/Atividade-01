@@ -2,7 +2,7 @@
 using Atividade1.Models.Cliente;
 using Atividade1.Models.Situacao;
 
-namespace Atividade1.Models.EventoEntity
+namespace Atividade1.Models.Evento
 {
     public class EventoEntity
     {
