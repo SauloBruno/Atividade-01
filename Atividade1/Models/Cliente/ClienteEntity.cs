@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using Atividade1.Models.Evento;
 
 namespace Atividade1.Models.Cliente
 {
     public class ClienteEntity
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         
         public string Descricao { get; set; }
+        public ICollection<EventoEntity> Eventos { get; set; }
         
         public TipoClienteEntity TipoCliente { get; set; }
 
@@ -27,11 +30,11 @@ namespace Atividade1.Models.Cliente
         public DateTime DataInsercao { get; set; }
 
         public DateTime DataUltimaModificacao { get; set; }
-        
-        public ClienteEntity(int id, string descricao)
+
+        public ClienteEntity()
         {
-            Id = id;
-            Descricao = descricao;
+            Id = new Guid();
+            Eventos = new List<EventoEntity>();
         }
         
     }

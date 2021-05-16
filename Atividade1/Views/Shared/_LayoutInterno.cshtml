@@ -11,7 +11,8 @@
 <header class="container">
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
         <div class="container">
-            <a class="navbar-brand" asp-area="" asp-controller="Interno" asp-action="Index" style="margin-right: 4rem;"><h1>Buffet - Central</h1></a>
+            <a class="navbar-brand" asp-area="" asp-controller="Interno" asp-action="Index" style="margin-right: 4rem;">
+                <h1>Buffet - Central</h1></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -19,7 +20,7 @@
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Interno" asp-action="PainelUsuario" style="margin-right: 2rem;">Painel do Usuario</a>
+                        <a class="nav-link" asp-area="" asp-controller="Interno" asp-action="PainelUsuario" asp-route-id="@TempData["email"]" style="margin-right: 2rem;">Painel do Usuario</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Interno" asp-action="Ajuda" style="margin-right: 2rem;">Ajuda</a>
@@ -38,30 +39,31 @@
         </div>
     </nav>
     <nav id="menu" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-with bg-with border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Interno" asp-action="Index" style="margin-right: 4rem;"><h2>Menu</h2></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Interno" asp-action="Sessao" style="margin-right: 2rem; color: black;">Sessão 1</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Interno" asp-action="Sessao" style="margin-right: 2rem; color: black;">Sessão 2</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Interno" asp-action="Sessao" style="margin-right: 2rem; color: black;">Sessão 3</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Interno" asp-action="Sessao" style=" color: black;">Sessão 4</a>
-                        </li>
-                    </ul>
-                </div>
+        <div class="container">
+            <a class="navbar-brand" asp-area="" asp-controller="Interno" asp-action="Index" style="margin-right: 4rem;">
+                <h2>Menu</h2></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Interno" asp-action="Sessao" style="margin-right: 2rem; color: black;">Sessão 1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Interno" asp-action="Sessao" style="margin-right: 2rem; color: black;">Sessão 2</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Interno" asp-action="Sessao" style="margin-right: 2rem; color: black;">Sessão 3</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Interno" asp-action="Sessao" style=" color: black;">Sessão 4</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
 </header>
 <div class="container">
     <main role="main" class="pb-3">

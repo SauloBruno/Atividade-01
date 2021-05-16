@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace Atividade1.Models.Cliente
+namespace Atividade1.Models.Evento
 {
-    public class TipoClienteEntity
+    public class TipoEventoEntity
     {
         public Guid Id { get; set; }
         public string Tipo { get; set; }
 
-        public TipoClienteEntity()
+        public TipoEventoEntity()
         {
             Id = new Guid();
         }

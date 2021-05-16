@@ -50,6 +50,8 @@ namespace Atividade1.Controllers
                 
                 TempData["msg-login"] = "Usuario Logado com sucesso.";
                 
+                TempData["email-usuario"] = email;
+
                 //interno index
                 return RedirectToActionPreserveMethod("Index","Interno");
             }

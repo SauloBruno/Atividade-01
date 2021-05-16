@@ -6,11 +6,10 @@ namespace Atividade1.Models.Evento
 {
     public class EventoEntity
     {
-        public int Id { get; set; }
-        
+        public Guid Id { get; set; }
         public string Descricao { get; set; }
         
-        public string Tipo { get; set; }
+        public TipoEventoEntity TipoEvento { get; set; }
 
         public DateTime DataHoraInicio { get; set; }
 
@@ -27,10 +26,9 @@ namespace Atividade1.Models.Evento
         public DateTime DataInsercao { get; set; }
 
         public DateTime DataUltimaModificacao { get; set; }
-        public EventoEntity(int id, string descricao)
+        public EventoEntity()
         {
-            Id = id;
-            Descricao = descricao;
+            Id = new Guid();
         }
     }
 }

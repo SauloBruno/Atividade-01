@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +47,21 @@ namespace Atividade1.Models.Acesso
 
             }
             
+        }
+
+        public Usuario BuscarPeloLogin(string login)
+        {
+            var usuario = _user.Users.Single(u => u.Email.Contains(login));
+
+            return usuario;
+        }
+
+        public Usuario EditarUsuario(Guid id, string nome, string senha)
+        {
+
+            
+            
+            return null;
         }
 
     }
