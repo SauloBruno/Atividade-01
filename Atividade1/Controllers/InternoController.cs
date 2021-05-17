@@ -118,7 +118,7 @@ namespace Atividade1.Controllers
                 cnpj = new Guid();
             }
             
-            _clienteService.InserirCliente(nome, email, cpf, data, tipo, endereco, descricao, observacao, cnpj);
+            _clienteService.InserirCliente(nome, email, cpf, data, tipo, endereco, descricao, observacao);
 
             TempData["cad-cliente"] = "Cliente cadastrado com sucesso"; 
         
