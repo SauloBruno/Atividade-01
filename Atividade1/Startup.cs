@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Atividade1.Data;
 using Atividade1.Models.Acesso;
+using Atividade1.Models.Cliente;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,6 +39,7 @@ namespace Atividade1
                 options.Password.RequiredLength = 8;
             }).AddEntityFrameworkStores<DataBaseContext>();
 
+            services.AddTransient<ClienteService>();
             services.AddTransient<AcessoService>();
         }
 

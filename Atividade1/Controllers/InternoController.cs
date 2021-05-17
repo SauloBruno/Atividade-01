@@ -111,13 +111,6 @@ namespace Atividade1.Controllers
             var descricao = rm.Descricao;
             var observacao = rm.Observacao;
 
-            var cnpj = Guid.Empty;
-            
-            if (tipo.Equals("Juridica"))
-            {
-                cnpj = new Guid();
-            }
-            
             _clienteService.InserirCliente(nome, email, cpf, data, tipo, endereco, descricao, observacao);
 
             TempData["cad-cliente"] = "Cliente cadastrado com sucesso"; 
