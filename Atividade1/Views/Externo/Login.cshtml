@@ -12,6 +12,13 @@
 </div>
 
 <div>
+    @if (@TempData["msg-editar"] != null)
+    {
+        <p style="text-align: center; color: #218838">@TempData["msg-editar"]</p>
+    }
+</div>
+
+<div>
     @if (@Model.Mensagem != null)
     {
         <p style="text-align: center; color: red">@Model.Mensagem</p>

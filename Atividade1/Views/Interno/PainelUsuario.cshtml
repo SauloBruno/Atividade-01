@@ -4,12 +4,18 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+
 <img style="display: block; margin-left: auto; margin-right: auto;" src="/img/icone.png" alt="some text" width=100 height=100>
 <br/>
 <div style="margin: auto; width: 13%;">
     <a style="text-align: center;" asp-controller="Externo" asp-action="Index">Editar Foto de perfil</a>    
 </div>
 <br/>
+@if (@TempData["msg-erros-editar"] != null)
+{
+    <p style="text-align: center; color: red">@TempData["msg-erros-editar"]</p>
+}
 <div class="d-flex justify-content-center">
     <div id="cardDados" class="card" style="width: 18rem;">
         <div class="card-header">
@@ -18,19 +24,20 @@
         <div class="card-body">
             <div class="form-group">
                 <form method="post" asp-controller="Interno" asp-action="Editar" >
-                <input type="hidden" id="Id" name="Id" value="@Model.Id">    
-                <br/>
-                <label for="cpEmail">Email:</label>
-                <input type="text" class="form-control" id="Email" value="@Model.Email" name="Email" >
-                <br/>
-                <label for="cpSenha">Senha:</label>
-                <input type="text" class="form-control" id="Senha" value="@Model.Senha" name="Senha">
-                <br/>
-                <br/>
-                <button type="button" id="btn" name="btn" class="btn btn-primary">Editar</button>
+                    <input type="hidden" id="Id" name="Id" value="@Model.Id">    
+                    <label for="Id">Id: (Não Editavel)</label>
+                    <input type="text" class="form-control" id="Id" disabled value="@Model.Id" name="Id" />
+                    <br/>
+                    <label for="Email">Email:</label>
+                    <input type="text" class="form-control" id="Email" value="@Model.Email" name="Email" />
+                    <br/>
+                    <label for="Senha">Senha: (Não Editavel)</label>
+                    <input type="text" class="form-control" id="Senha" disabled value="@Model.Senha" name="Senha" />
+                    <br/>
+                    <br/>
+                    <button type="submit" id="btn" name="btn" class="btn btn-primary">Editar</button>
                 </form>
             </div>
         </div>
     </div>
-
 </div>

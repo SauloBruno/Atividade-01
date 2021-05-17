@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Threading.Tasks;
 using Atividade1.Models.Acesso;
 using Atividade1.RequestModel;
 using Atividade1.ViewModels.Acesso;
@@ -25,31 +27,53 @@ namespace Atividade1.Controllers
         
         public IActionResult PainelUsuario(string id)
         {
-            var u = _acessoService.BuscarPeloLogin(id);
+            if (id != null)
+            {
+                var u = _acessoService.BuscarPeloLogin(id);
 
-            Console.WriteLine("Email: "+id);
+                Console.WriteLine("Email: "+id);
             
-            var viewModel = new UserLogadoVidewModel();
-            viewModel.Id = u.Id;
-            viewModel.Email = u.Email;
-            viewModel.Senha = u.PasswordHash;
-            viewModel.DataNasciemnto = u.Data;
+                var viewModel = new UserLogadoVidewModel();
+                viewModel.Id = u.Id;
+                viewModel.Email = u.UserName;
+                viewModel.Senha = u.PasswordHash;
+                viewModel.DataNasciemnto = u.Data;
+
+                return View(viewModel);
+            }
+
+            return View();   
             
-            return View(viewModel);
         }
         
-        [HttpPost]
-        public IActionResult Editar(UserEditRequestModel ud)
+        public async Task<IActionResult> Editar(UserEditRequestModel ud)
         {
             var id = ud.Id;
             var email = ud.Email;
-            var senha = ud.Senha;
 
+            try
+            {
+                await _acessoService.EditarUsuario(id, email);
+
+                TempData["msg-editar"] = "Usuario editado com sucesso.";
+
+                return RedirectToAction("Login","Externo");
+            }
+            catch (CadastroException exception)
+            {
+                var listaErros = new List<string>();
+                
+                foreach (var e in exception.Erros)
+                {
+                    listaErros.Add(e.Description);
+                }
+                
+                TempData["msg-erros-editar"] = listaErros;
+
+                return RedirectToAction("PainelUsuario");
+            }
             
-
-            return View("Ajuda");
         }
-        
         public IActionResult Ajuda()
         {
             return View();

@@ -49,19 +49,32 @@ namespace Atividade1.Models.Acesso
             
         }
 
+        public Usuario BuscarPeloId(Guid id)
+        {
+            var usuario = _user.Users.Single(u => u.Id.Equals(id));
+
+            return usuario;
+        }
         public Usuario BuscarPeloLogin(string login)
         {
-            var usuario = _user.Users.Single(u => u.Email.Contains(login));
+            var usuario = _user.Users.Single(u => u.UserName.Contains(login));
 
             return usuario;
         }
 
-        public Usuario EditarUsuario(Guid id, string nome, string senha)
+        public async Task EditarUsuario(Guid id, string email)
         {
 
+            Usuario u = BuscarPeloId(id);
+            u.UserName = email;
+
+            var resultado = await _user.UpdateAsync(u);
             
+            if (!resultado.Succeeded)
+            {
+                throw new CadastroException(resultado.Errors);
+            }
             
-            return null;
         }
 
     }
