@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Atividade1.Data;
 using Atividade1.Models.Acesso;
+using Atividade1.Models.Cliente;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,6 +40,7 @@ namespace Atividade1
             }).AddEntityFrameworkStores<DataBaseContext>();
 
             services.AddTransient<AcessoService>();
+            services.AddTransient<ClienteService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

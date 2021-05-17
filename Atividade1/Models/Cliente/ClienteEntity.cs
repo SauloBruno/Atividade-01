@@ -9,15 +9,15 @@ namespace Atividade1.Models.Cliente
         public Guid Id { get; set; }
         
         public string Descricao { get; set; }
-        public ICollection<EventoEntity> Eventos { get; set; }
+        public ICollection<EventoEntity> Eventos { get; set; }//não inserido
         
-        public TipoClienteEntity TipoCliente { get; set; }
+        public TipoClienteEntity TipoCliente { get; set; }//definido no formulario
 
-        public string Cpf { get; set; }
+        public string Cpf { get; set; }//depende do tipoCliente
 
         public DateTime DataDeNascimento { get; set; }
 
-        public string Cnpj { get; set; }
+        public Guid Cnpj { get; set; }//baseado no tipo do cliente
 
         public string Nome { get; set; }
 
@@ -27,9 +27,9 @@ namespace Atividade1.Models.Cliente
 
         public string TextoObservacao { get; set; }
 
-        public DateTime DataInsercao { get; set; }
+        public DateTime DataInsercao { get; set; }//durante a inserção
 
-        public DateTime DataUltimaModificacao { get; set; }
+        public DateTime DataUltimaModificacao { get; set; }//durabte a inserçaõ
 
         public ClienteEntity()
         {
