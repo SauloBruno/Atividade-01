@@ -1,4 +1,20 @@
-﻿<h1>Sessão Local</h1>
+﻿@model Atividade1.ViewModels.Local.LocalViewModel
+
+<h1>Sessão Local</h1>
+
+<div class="alert-success" >
+    @if (@Model.MsgSucess != null)
+    {
+        <p style="text-align: center;">@Model.MsgSucess</p>
+    }
+</div>
+
+<div class="alert-danger">
+    @if (@Model.MsgFail != null)
+    {
+        <p style="text-align: center;">@Model.MsgFail</p>
+    }
+</div>
 
 <table class="table table-striped">
    
@@ -18,7 +34,7 @@
             </div>
             
             <div class="form-group">
-                <label for="Bairro">Bairro:</label>
+                <label for="Bairro">Bairro/Local:</label>
                 <input type="text" class="form-control" id="Bairro" name="Bairro" />
             </div>
             
@@ -35,21 +51,21 @@
      <hr/>
      <fieldset>
      <legend>Pesquisar:</legend>
-             <form method="POST" asp-action="SessaoClienteBusca" asp-controller="Interno" > 
+             <form method="POST" asp-action="SessaoLocalBusca" asp-controller="Interno" > 
                  <input type="hidden" name="param" value="pesquisar" />
                  <div class="row">
                      <div class="col">
                          <div class="form-group">
                              <label for="Nome">Nome:</label>
-                             <input type="text" class="form-control" id="Nome" name="Nome" >
+                             <input type="text" class="form-control" id="Nome" name="Nome" />
                          </div>
                      </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="Bairro" >Bairro: </label>
-                            <input type="text" class="form-control" id="Bairro" name="Bairro" >
-                        </div>
-                    </div>
+                     <div class="col">
+                         <div class="form-group">
+                             <label for="Bairro">Bairro/Rua:</label>
+                             <input type="text" class="form-control" id="Bairro" name="Bairro" />
+                         </div>
+                     </div>
                  </div>
                  <div class="form-group">               
                      <button type="submit" class="btn btn-primary" >Buscar</button>
@@ -69,16 +85,17 @@
      </tr>
      </thead>
      <tbody>
-        
+        @foreach(var lc in @Model.Locais)
+        {
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><a asp-controller="" asp-action="" asp-route-id="" >Editar</a></td>
-                <td><a asp-controller="" asp-action="" asp-route-id="">Excluir</a></td>
+                <td>@lc.Nome</td>
+                <td>@lc.Cidade</td>
+                <td>@lc.Bairro</td>
+                <td>@lc.Capacidade</td>
+                <td><a asp-controller="Interno" asp-action="EditarLc" asp-route-id="@lc.Id" >Editar</a></td>
+                <td><a asp-controller="Interno" asp-action="ExcluirLc" asp-route-id="@lc.Id">Excluir</a></td>
             </tr>
-        
+        }
      </tbody>
         
  </table>

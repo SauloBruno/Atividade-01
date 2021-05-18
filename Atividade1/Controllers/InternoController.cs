@@ -5,11 +5,14 @@ using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Atividade1.Models.Acesso;
 using Atividade1.Models.Cliente;
+using Atividade1.Models.Local;
 using Atividade1.RequestModel;
 using Atividade1.ViewModels.Acesso;
 using Atividade1.ViewModels.Cliente;
+using Atividade1.ViewModels.Local;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.VisualBasic;
 
 namespace Atividade1.Controllers
@@ -18,11 +21,13 @@ namespace Atividade1.Controllers
     {
         private readonly AcessoService _acessoService;
         private readonly ClienteService _clienteService;
-
-        public InternoController(AcessoService acessoService, ClienteService clienteService)
+        private readonly LocalService _localService;
+        
+        public InternoController(AcessoService acessoService, ClienteService clienteService, LocalService localService)
         {
             _acessoService = acessoService;
             _clienteService = clienteService;
+            _localService = localService;
         }
 
         public IActionResult Index()
@@ -214,17 +219,99 @@ namespace Atividade1.Controllers
         [HttpGet]
         public IActionResult SessaoLocal()
         {
+            var p1 = (string)TempData["busca"];
+            var p2 = (string)TempData["nome"];
+            var p3 = (string)TempData["bairro"];
+            
+            var viewModel = new LocalViewModel()
+            {
+                MsgSucess = (string)TempData["cad-local"],
+                MsgFail = (string)TempData["cad-local-error"]
+            };
 
-            return View();
+            List<LocalEntity> listaLocal = null;
+            if (p1 != null)
+            {
+                listaLocal = _localService.BuscarLocalFiltro(p2, p3);
+            }
+            else
+            {
+                listaLocal = _localService.BuscarTodos();   
+            }
+
+            foreach (var l in listaLocal)
+            {
+                viewModel.Locais.Add(new Local()
+                {
+                    Id = l.Id,
+                    Nome = l.Nome,
+                    Cidade = l.Cidade,
+                    Bairro = l.Bairro,
+                    Capacidade = l.Capacidade.ToString()
+                });
+            }
+
+            return View(viewModel);
         }
         
         [HttpPost]
         public IActionResult SessaoLocal(LocalRequestModel rm)
         {
+            if (rm.Capacidade == null )
+            {
+                TempData["cad-local-error"] = "Campo local deve ser preenchido!";
+                return RedirectToAction("SessaoLocal");
+            }
+
+            var nome = rm.Nome;
+            var cidade = rm.Cidade;
+            var bairro = rm.Bairro;
+            var capacidade = Int32.Parse(rm.Capacidade);
             
+            if (nome == null)
+            {
+                TempData["cad-local-error"] = "Campo nome deve ser preenchido!";
+                return RedirectToAction("SessaoLocal");
+            }
             
+            if (cidade == null)
+            {
+                TempData["cad-local-error"] = "Campo local deve ser preenchido!";
+                return RedirectToAction("SessaoLocal");
+            }
             
-            return RedirectToAction("SessaoCliente");
+            if (bairro == null)
+            {
+                TempData["cad-local-error"] = "Campo local deve ser preenchido!";
+                return RedirectToAction("SessaoLocal");
+            }
+            
+            if (capacidade == 0)
+            {
+                TempData["cad-local-error"] = "A capacidade não pode ser 0";
+                return RedirectToAction("SessaoLocal");
+            }
+            
+            var l = _localService.BuscarPeloNome(nome);
+
+            if (l.Nome != "vazio")
+            {
+                TempData["cad-local-error"] = "Esse Nome já existe!";
+                return RedirectToAction("SessaoLocal");
+            }
+
+            _localService.InserirLocal(nome, cidade, bairro, capacidade);
+            
+            TempData["cad-local"] = "Local cadastrado com sucesso";
+
+            return RedirectToAction("SessaoLocal");
+        }
+        
+        public IActionResult ExcluirLc(Guid id)
+        {
+            _localService.Remover(id);   
+         
+            return RedirectToAction("SessaoLocal");
         }
             
         [HttpPost]
@@ -239,6 +326,21 @@ namespace Atividade1.Controllers
             TempData["tipo"] = tipo;
             
             return RedirectToAction("SessaoCliente");
+
+        }
+        
+        [HttpPost]
+        public IActionResult SessaoLocalBusca(LocalRequestModel rm)
+        {
+            
+            var nome = rm.Nome;
+            var bairro = rm.Bairro;
+
+            TempData["busca"] = "buscar";
+            TempData["nome"] = nome;
+            TempData["bairro"] = bairro;
+
+            return RedirectToAction("SessaoLocal");
 
         }
             
@@ -278,19 +380,19 @@ namespace Atividade1.Controllers
 
             if (nome == null)
             {
-                TempData["cad-cliente-error"] = "Campo Nome deve ser preenchido!";
+                TempData["cad-cliente-error"] = "(Update) Campo Nome deve ser preenchido!";
                 return RedirectToAction("SessaoCliente");
             }
             
             if (email == null)
             {
-                TempData["cad-cliente-error"] = "Campo Email deve ser preenchido!";
+                TempData["cad-cliente-error"] = "(Update) Campo Email deve ser preenchido!";
                 return RedirectToAction("SessaoCliente");
             }
             
             if (cpf == null || cpf.Length < 11 )
             {
-                TempData["cad-cliente-error"] = "Campo CPF deve ser preenchido e deve possuir 11 digitos!";
+                TempData["cad-cliente-error"] = "(Update) Campo CPF deve ser preenchido e deve possuir 11 digitos!";
                 return RedirectToAction("SessaoCliente");
             }
             else
@@ -301,25 +403,25 @@ namespace Atividade1.Controllers
 
             if (endereco == null)
             {
-                TempData["cad-cliente-error"] = "Campo Endereço deve ser preenchido!";
+                TempData["cad-cliente-error"] = "(Update) Campo Endereço deve ser preenchido!";
                 return RedirectToAction("SessaoCliente");
             }
             
             if (data == null)
             {
-                TempData["cad-cliente-error"] = "Campo Data deve ser preenchido!";
+                TempData["cad-cliente-error"] = "(Update) Campo Data deve ser preenchido!";
                 return RedirectToAction("SessaoCliente");
             }
             
             if (descricao == null)
             {
-                TempData["cad-cliente-error"] = "Campo Descrição deve ser preenchido!";
+                TempData["cad-cliente-error"] = "(Update) Campo Descrição deve ser preenchido!";
                 return RedirectToAction("SessaoCliente");
             }
             
             if (observacao == null)
             {
-                TempData["cad-cliente-error"] = "Campo Observação deve ser preenchido!";
+                TempData["cad-cliente-error"] = "(Update) Campo Observação deve ser preenchido!";
                 return RedirectToAction("SessaoCliente");
             }
             
@@ -327,16 +429,83 @@ namespace Atividade1.Controllers
 
             if (cl.Nome != "vazio" && cl.Id.ToString() != ac.ToString())
             {
-                TempData["cad-cliente-error"] = "Login já existe!";
+                TempData["cad-cliente-error"] = "(Update) Login já existe!";
                 return RedirectToAction("SessaoCliente");
             }
 
             _clienteService.EditarCliente(ac, nome, email, cpf, data, endereco, descricao, observacao);
 
-            TempData["cad-cliente"] = "Cliente Editado com sucesso"; 
+            TempData["cad-cliente"] = "(Update) Cliente Editado com sucesso"; 
         
             return RedirectToAction("SessaoCliente");
 
+        }
+         
+        [HttpGet]
+        public IActionResult EditarLc(Guid id)
+        {
+            var c = _localService.BuscarPeloId(id);
+
+            var viewModel = new EditLcViewModel();
+            viewModel.Id = id;
+            
+            viewModel.Local = new LocalEdt()
+            {
+                Nome = c.Nome,
+                Cidade = c.Cidade,
+                Bairro = c.Bairro,
+                Capacidade = c.Capacidade.ToString()
+            };
+            
+            return View(viewModel);
+        }
+        
+        [HttpPost]
+        public IActionResult EditarLc(LocalRequestModel rm)
+        {
+            if (rm.Capacidade == null)
+            {
+                TempData["cad-local-error"] = "(Update) Campo capacidade deve ser preenchido!";
+                return RedirectToAction("SessaoLocal");
+            }
+            
+            var ac = rm.ac;
+            var nome = rm.Nome;
+            var cidade = rm.Cidade;
+            var bairro = rm.Bairro;
+            var capacidade = Int32.Parse(rm.Capacidade);
+
+            var lc = _localService.BuscarPeloNome(nome);
+            
+            if (lc.Nome != "vazio" && lc.Id.ToString() != ac.ToString())
+            {
+                TempData["cad-local-error"] = "(Update) Esse Nome já existe!";
+                return RedirectToAction("SessaoLocal");
+            }
+
+            if (nome == null)
+            {
+                TempData["cad-local-error"] = "(Update) Campo Nome deve ser preenchido!";
+                return RedirectToAction("SessaoLocal");
+            }
+            
+            if (cidade == null)
+            {
+                TempData["cad-local-error"] = "(Update) Campo Cidade deve ser preenchido!";
+                return RedirectToAction("SessaoLocal");
+            }
+            
+            if (bairro == null)
+            {
+                TempData["cad-local-error"] = "(Update) Campo Bairro deve ser preenchido!";
+                return RedirectToAction("SessaoLocal");
+            }
+
+            _localService.Editar(ac, nome, cidade, bairro, capacidade);
+            
+            TempData["cad-local"] = "Local Editado com sucesso";
+            
+            return RedirectToAction("SessaoLocal");
         }
             
         public IActionResult Excluir(Guid id)

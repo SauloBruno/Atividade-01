@@ -1,0 +1,32 @@
+﻿@model Atividade1.ViewModels.Local.EditLcViewModel
+
+<fieldset>
+    <legend>Edição de Local</legend>
+    <form method="post" asp-action="EditarLc" asp-controller="Interno" > 
+        <input type="hidden" name="ac" value="@Model.Id" />
+            
+        <div class="form-group">
+            <label for="Nome">Nome:</label>
+            <input type="text" class="form-control" id="Nome" name="Nome" value="@Model.Local.Nome" />
+        </div>
+            
+        <div class="form-group">
+            <label for="Cidade">Cidade:</label>
+            <input type="text" class="form-control" id="Cidade" name="Cidade" value="@Model.Local.Cidade" />
+        </div>
+            
+        <div class="form-group">
+            <label for="Bairro">Bairro/Local:</label>
+            <input type="text" class="form-control" id="Bairro" name="Bairro" value="@Model.Local.Bairro" />
+        </div>
+            
+        <div class="form-group">
+            <label for="Capacidade">Capacidade:</label>
+            <input type="text" class="form-control" id="Capacidade" name="Capacidade" value="@Model.Local.Capacidade" />
+        </div>
+
+        <div class="form-group">               
+            <button type="submit" class="btn btn-primary" >Editar</button>
+        </div>
+    </form>
+</fieldset>

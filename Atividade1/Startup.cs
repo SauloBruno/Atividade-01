@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Atividade1.Data;
 using Atividade1.Models.Acesso;
 using Atividade1.Models.Cliente;
+using Atividade1.Models.Evento;
+using Atividade1.Models.Local;
+using Atividade1.Models.Situacao;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -41,6 +44,11 @@ namespace Atividade1
 
             services.AddTransient<ClienteService>();
             services.AddTransient<AcessoService>();
+            services.AddTransient<LocalService>();
+            services.AddTransient<EventoService>();
+            services.AddTransient<SituacaoConvidadoService>();
+            services.AddTransient<SituacaoEventoService>();
+            services.AddTransient<TipoEventoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
