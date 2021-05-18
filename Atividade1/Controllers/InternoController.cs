@@ -10,6 +10,7 @@ using Atividade1.ViewModels.Acesso;
 using Atividade1.ViewModels.Cliente;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.VisualBasic;
 
 namespace Atividade1.Controllers
 {
@@ -95,6 +96,23 @@ namespace Atividade1.Controllers
 
             viewModel.MsgSucess = (string) TempData["cad-cliente"];
             viewModel.MsgFail = (string) TempData["cad-cliente-error"];
+
+            var cl = _clienteService.ObterClientes();
+            
+            foreach (var c in cl)
+            {
+                viewModel.Clientes.Add(new Cliente()
+                {
+                    TipoCliente = c.TipoCliente.Tipo,
+                    Id = c.Id,
+                    Nome = c.Nome,
+                    Email = c.Email,
+                    Cpf = c.Cpf,
+                    DataNascimento = c.DataDeNascimento.ToString("dd-MM-yyyy"),
+                    DataInsercao = c.DataInsercao.ToString("dd-MM-yyyy"),
+                    DataUltimaAlteracao = c.DataUltimaModificacao.ToString("dd-MM-yyyy")
+                });
+            }
             
             return View(viewModel);
         }
@@ -158,22 +176,28 @@ namespace Atividade1.Controllers
                 TempData["cad-cliente-error"] = "Campo Observação deve ser preenchido!";
                 return RedirectToAction("SessaoCliente");
             }
+            
+            var cl = _clienteService.BuscarPeloLogin(email);
 
-            try
-            {
-                _clienteService.InserirCliente(nome, email, cpf, data, tipo, endereco, descricao, observacao);
-            }
-            catch (Exception e)
+            if (cl.Nome != "vazio")
             {
                 TempData["cad-cliente-error"] = "Login já existe!";
                 return RedirectToAction("SessaoCliente");
             }
-            
-            
+
+            _clienteService.InserirCliente(nome, email, cpf, data, tipo, endereco, descricao, observacao);
+
             TempData["cad-cliente"] = "Cliente cadastrado com sucesso"; 
         
             return RedirectToAction("SessaoCliente");
 
+        }
+        
+        public IActionResult Excluir(Guid id)
+        {
+            _clienteService.Remover(id);
+            
+            return RedirectToAction("SessaoCliente");
         }
 
     }

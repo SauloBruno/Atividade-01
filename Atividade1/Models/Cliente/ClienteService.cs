@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Atividade1.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Atividade1.Models.Cliente
 {
@@ -13,11 +15,27 @@ namespace Atividade1.Models.Cliente
             _dataBaseContext = dataBaseContext;
         }
 
-        public ClienteEntity BuscarPeloLogin(string login)
+        public List<ClienteEntity> ObterClientes()
         {
-            ClienteEntity ce = _dataBaseContext.Cliente.Single(c => c.Email.Contains(login));
+            return _dataBaseContext.Cliente
+                .Include(c => c.Eventos)
+                .Include(c => c.TipoCliente)
+                .ToList();
+        }
 
-            return ce;
+        public ClienteEntity BuscarPeloLogin(string email)
+        {
+            try
+            {
+                return _dataBaseContext.Cliente.Single(c => c.Email.Equals(email));
+            }
+            catch (Exception e)
+            {
+                ClienteEntity cl = new ClienteEntity();
+                cl.Nome = "vazio";
+                return cl;
+            }
+            
         }
 
         public void InserirCliente(string nome, string email, string cpf, string data, string tipo, string endereco, string descricao, string observacao)
@@ -51,12 +69,14 @@ namespace Atividade1.Models.Cliente
             c.DataInsercao = DateTime.Now;
             c.DataUltimaModificacao = DateTime.Now;
 
-            if (BuscarPeloLogin(email) != null)
-            {
-                throw new Exception("Login Ja exestente!");
-            }
-
             _dataBaseContext.Cliente.Add(c);
+            _dataBaseContext.SaveChanges();
+        }
+
+        public void Remover(Guid id)
+        {
+            var c = _dataBaseContext.Cliente.Find(id);
+            _dataBaseContext.Cliente.Remove(c);
             _dataBaseContext.SaveChanges();
         }
     }
