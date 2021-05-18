@@ -1,0 +1,47 @@
+﻿@model Atividade1.ViewModels.Cliente.EditclViewModel
+
+<fieldset>
+    <legend>Cadastro de cliente</legend>
+    <form method="post" asp-action="EditarCl" asp-controller="Interno" > 
+        <input type="hidden" name="ac" value="@Model.Id" />
+        
+        <div class="form-group">
+            <label for="Nome">Nome:</label>
+            <input type="text" class="form-control" id="Nome" name="Nome" value="@Model.Cliente.Nome" />
+        </div>
+        
+        <div class="form-group">
+            <label for="Email">Email:</label>
+            <input type="text" class="form-control" id="Email" name="Email" value="@Model.Cliente.Email" />
+        </div>
+        
+        <div class="form-group">
+            <label for="CPF">CPF:</label>
+            <input type="text" class="form-control" id="CPF" name="CPF" value="@Model.Cliente.Cpf"/>
+        </div>
+        
+        <div class="form-group">
+            <label for="Data">Data Nasciemento:</label>
+            <input type="text" class="form-control" id="Data" name="Data" value="@Model.Cliente.Data" />
+        </div>
+        
+        <div class="form-group">
+            <label for="Endereco">Endereço:</label>
+            <input type="text" class="form-control" id="Endereco" name="Endereco" value="@Model.Cliente.Endereco"/>
+        </div>
+        
+        <div class="form-group">
+            <label for="Descricao">Descrição:</label>
+            <input type="text" class="form-control" id="Descricao" name="Descricao" value="@Model.Cliente.Descricao"/>
+        </div>
+        
+        <div class="form-group">
+            <label for="Observacao">Observação:</label>
+            <input type="text" class="form-control" id="Observacao" name="Observacao" value="@Model.Cliente.obs"/>
+        </div>
+        
+        <div class="form-group">               
+            <button type="submit" class="btn btn-primary" >Editar</button>
+        </div>
+    </form>
+ </fieldset>

@@ -1,0 +1,84 @@
+﻿<h1>Sessão Local</h1>
+
+<table class="table table-striped">
+   
+     <fieldset>
+        <legend>Cadastro de Local</legend>
+        <form method="post" asp-action="SessaoLocal" asp-controller="Interno" > 
+            <input type="hidden" name="param" value="cadastrar" />
+            
+            <div class="form-group">
+                <label for="Nome">Nome:</label>
+                <input type="text" class="form-control" id="Nome" name="Nome" />
+            </div>
+            
+            <div class="form-group">
+                <label for="Cidade">Cidade:</label>
+                <input type="text" class="form-control" id="Cidade" name="Cidade" />
+            </div>
+            
+            <div class="form-group">
+                <label for="Bairro">Bairro:</label>
+                <input type="text" class="form-control" id="Bairro" name="Bairro" />
+            </div>
+            
+            <div class="form-group">
+                <label for="Capacidade">Capacidade:</label>
+                <input type="text" class="form-control" id="Capacidade" name="Capacidade" />
+            </div>
+
+            <div class="form-group">               
+                <button type="submit" class="btn btn-primary" >Salvar</button>
+            </div>
+        </form>
+     </fieldset>
+     <hr/>
+     <fieldset>
+     <legend>Pesquisar:</legend>
+             <form method="POST" asp-action="SessaoClienteBusca" asp-controller="Interno" > 
+                 <input type="hidden" name="param" value="pesquisar" />
+                 <div class="row">
+                     <div class="col">
+                         <div class="form-group">
+                             <label for="Nome">Nome:</label>
+                             <input type="text" class="form-control" id="Nome" name="Nome" >
+                         </div>
+                     </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="Bairro" >Bairro: </label>
+                            <input type="text" class="form-control" id="Bairro" name="Bairro" >
+                        </div>
+                    </div>
+                 </div>
+                 <div class="form-group">               
+                     <button type="submit" class="btn btn-primary" >Buscar</button>
+                 </div>
+             </form>
+     </fieldset>
+     
+     <legend>Locais</legend>    
+     <thead>
+     <tr>
+         <th>Nome</th>
+         <th>Cidade</th>
+         <th>Bairro</th>
+         <th>Capacidade</th>
+         <th>Ação 1</th>
+         <th>Ação 2</th>
+     </tr>
+     </thead>
+     <tbody>
+        
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><a asp-controller="" asp-action="" asp-route-id="" >Editar</a></td>
+                <td><a asp-controller="" asp-action="" asp-route-id="">Excluir</a></td>
+            </tr>
+        
+     </tbody>
+        
+ </table>

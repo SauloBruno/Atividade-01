@@ -79,5 +79,49 @@ namespace Atividade1.Models.Cliente
             _dataBaseContext.Cliente.Remove(c);
             _dataBaseContext.SaveChanges();
         }
+
+        public ClienteEntity BuscarPeloId(Guid id)
+        {
+            var cliente = _dataBaseContext.Cliente.Single(c => c.Id.Equals(id));
+            return cliente;
+        }
+
+        public void EditarCliente(Guid ac, string nome, string email, string cpf, string data, string endereco, string descricao, string observacao)
+        {
+            var cl = BuscarPeloId(ac);
+
+            cl.Nome = nome;
+            cl.Email = email;
+            cl.Cpf = cpf;
+            cl.Endereco = endereco;
+            cl.TextoObservacao = observacao;
+            cl.DataDeNascimento = DateTime.Parse(data);
+            cl.DataUltimaModificacao = DateTime.Now;
+
+            _dataBaseContext.Cliente.Update(cl);
+            _dataBaseContext.SaveChanges();
+
+        }
+
+        public List<ClienteEntity> BuscarFiltro(string nome, string tipo)
+        {
+            var listaFiltro = _dataBaseContext.Cliente
+                .Include(c=> c.TipoCliente)
+                .Include(c=>c.Eventos)
+                .AsQueryable();
+
+            if (nome != null)
+            {
+                listaFiltro = listaFiltro.Where(c => c.Nome.Contains(nome));
+            }
+
+            if (tipo != "Vazio")
+            {
+                listaFiltro = listaFiltro.Where(c => c.TipoCliente.Tipo.Contains(tipo));
+            }
+
+            return listaFiltro.ToList();
+
+        }
     }
 }

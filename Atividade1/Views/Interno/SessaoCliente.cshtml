@@ -21,7 +21,7 @@
      <fieldset>
         <legend>Cadastro de cliente</legend>
         <form method="post" asp-action="SessaoCliente" asp-controller="Interno" > 
-            <input type="hidden" name="ac" value="Cadastrar" />
+            <input type="hidden" name="param" value="cadastrar" />
             
             <div class="form-group">
                 <label for="Nome">Nome:</label>
@@ -75,19 +75,20 @@
      <hr/>
      <fieldset>
      <legend>Pesquisar:</legend>
-             <form method="POST" asp-action="" asp-controller="" > 
-                 <input type="hidden" name="ac" value="pesquisar" />
+             <form method="POST" asp-action="SessaoClienteBusca" asp-controller="Interno" > 
+                 <input type="hidden" name="param" value="pesquisar" />
                  <div class="row">
                      <div class="col">
                          <div class="form-group">
-                             <label for="cpNome">Nome:</label>
-                             <input type="text" class="form-control" id="cpNome" name="cpNome" >
+                             <label for="Nome">Nome:</label>
+                             <input type="text" class="form-control" id="Nome" name="Nome" >
                          </div>
                      </div>
                     <div class="col">
                         <div class="form-group">
                             <label>Tipo Cliente: </label>
                             <select class="form-control" name="tipoCliente">
+                                <option value="Vazio">Selecione uma opção</option>
                                 <option value="Fisica">Fisica</option>
                                 <option value="Juridica">Juridica</option>
                             </select>
@@ -125,7 +126,7 @@
                 <td>@c.Cpf</td>
                 <td>@c.DataInsercao</td>
                 <td>@c.DataUltimaAlteracao</td>
-                <td><a asp-controller="" asp-action="" asp-route-id="@c.Id" >Editar</a></td>
+                <td><a asp-controller="Interno" asp-action="EditarCl" asp-route-id="@c.Id" >Editar</a></td>
                 <td><a asp-controller="Interno" asp-action="Excluir" asp-route-id="@c.Id">Excluir</a></td>
             </tr>
         }

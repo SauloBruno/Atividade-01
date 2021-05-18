@@ -1,4 +1,6 @@
-﻿namespace Atividade1.RequestModel
+﻿using System;
+
+namespace Atividade1.RequestModel
 {
     public class ClienteCadRequestModel
     {
@@ -18,7 +20,9 @@
         
         public string Observacao { get; set; }
 
-        public string ac { get; set; }
+        public Guid ac { get; set; }
 
+        public string param { get; set; }
+        
     }
 }
