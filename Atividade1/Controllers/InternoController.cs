@@ -94,7 +94,8 @@ namespace Atividade1.Controllers
             var viewModel = new ClienteViewModel();
 
             viewModel.MsgSucess = (string) TempData["cad-cliente"];
-
+            viewModel.MsgFail = (string) TempData["cad-cliente-error"];
+            
             return View(viewModel);
         }
         
@@ -111,8 +112,64 @@ namespace Atividade1.Controllers
             var descricao = rm.Descricao;
             var observacao = rm.Observacao;
 
-            _clienteService.InserirCliente(nome, email, cpf, data, tipo, endereco, descricao, observacao);
+            if (nome == null)
+            {
+                TempData["cad-cliente-error"] = "Campo Nome deve ser preenchido!";
+                return RedirectToAction("SessaoCliente");
+            }
+            
+            if (email == null)
+            {
+                TempData["cad-cliente-error"] = "Campo Email deve ser preenchido!";
+                return RedirectToAction("SessaoCliente");
+            }
+            
+            if (cpf == null || cpf.Length < 11 )
+            {
+                TempData["cad-cliente-error"] = "Campo CPF deve ser preenchido e deve possuir 11 digitos!";
+                return RedirectToAction("SessaoCliente");
+            }
+            else
+            {
+                cpf = cpf.Replace(".", "").Replace("-", "");
+                Console.WriteLine(cpf);
+            }
 
+            if (tipo.Equals("vazio"))
+            {
+                TempData["cad-cliente-error"] = "Campo Tipo cliente deve ser selecionado!";
+                return RedirectToAction("SessaoCliente");
+            }
+            
+            if (endereco == null)
+            {
+                TempData["cad-cliente-error"] = "Campo Endereço deve ser preenchido!";
+                return RedirectToAction("SessaoCliente");
+            }
+            
+            if (descricao == null)
+            {
+                TempData["cad-cliente-error"] = "Campo Descrição deve ser preenchido!";
+                return RedirectToAction("SessaoCliente");
+            }
+            
+            if (observacao == null)
+            {
+                TempData["cad-cliente-error"] = "Campo Observação deve ser preenchido!";
+                return RedirectToAction("SessaoCliente");
+            }
+
+            try
+            {
+                _clienteService.InserirCliente(nome, email, cpf, data, tipo, endereco, descricao, observacao);
+            }
+            catch (Exception e)
+            {
+                TempData["cad-cliente-error"] = "Login já existe!";
+                return RedirectToAction("SessaoCliente");
+            }
+            
+            
             TempData["cad-cliente"] = "Cliente cadastrado com sucesso"; 
         
             return RedirectToAction("SessaoCliente");

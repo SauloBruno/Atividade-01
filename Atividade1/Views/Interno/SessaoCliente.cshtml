@@ -2,10 +2,17 @@
 
 <h1>Sessão Cliente</h1>
 
-<div>
+<div class="alert-success" >
     @if (@Model.MsgSucess != null)
     {
-        <p style="text-align: center; color: #28a745">@Model.MsgSucess</p>
+        <p style="text-align: center;">@Model.MsgSucess</p>
+    }
+</div>
+
+<div class="alert-danger">
+    @if (@Model.MsgFail != null)
+    {
+        <p style="text-align: center;">@Model.MsgFail</p>
     }
 </div>
 
@@ -39,6 +46,7 @@
             <div class="form-group">
                 <label>Tipo Cliente: </label>
                 <select name="tipoCliente" class="form-control">
+                    <option value="vazio" >Selecione um Opção</option>
                     <option value="Fisica">Fisica</option>
                     <option value="Juridica">Juridica</option>
                 </select>
@@ -69,27 +77,30 @@
      <legend>Pesquisar:</legend>
              <form method="POST" asp-action="" asp-controller="" > 
                  <input type="hidden" name="ac" value="pesquisar" />
-                 
-                 <div class="form-group">
-                     <label for="cpNome">Nome:</label>
-                     <input type="text" class="form-control" id="cpNome" name="cpNome" >
+                 <div class="row">
+                     <div class="col">
+                         <div class="form-group">
+                             <label for="cpNome">Nome:</label>
+                             <input type="text" class="form-control" id="cpNome" name="cpNome" >
+                         </div>
+                     </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Tipo Cliente: </label>
+                            <select class="form-control" name="tipoCliente">
+                                <option value="Fisica">Fisica</option>
+                                <option value="Juridica">Juridica</option>
+                            </select>
+                        </div>
+                    </div>
                  </div>
-                 
-                 <div class="form-group">
-                     <select name="tipoCliente">
-                         <label>Tipo Cliente: </label>
-                         <option value="Fisica">Fisica</option>
-                         <option value="Juridica">Juridica</option>
-                     </select>
-                 </div>
-                 
                  <div class="form-group">               
                      <button type="submit" class="btn btn-primary" >Buscar</button>
                  </div>
              </form>
      </fieldset>
      
-     <p>Clientes</p>    
+     <legend>Clientes</legend>    
      <thead>
      <tr>
          <th>TIpo Cliente</th>
@@ -112,8 +123,8 @@
             <td></td>
             <td></td>
             <td></td>
-            <td><a>Editar</a></td>
-            <td><a>Excluir</a></td>
+            <td><a href="">Editar</a></td>
+            <td><a href="">Excluir</a></td>
         </tr>
      </tbody>
         

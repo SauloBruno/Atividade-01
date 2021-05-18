@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Atividade1.Data;
 
 namespace Atividade1.Models.Cliente
@@ -10,6 +11,13 @@ namespace Atividade1.Models.Cliente
         public ClienteService(DataBaseContext dataBaseContext)
         {
             _dataBaseContext = dataBaseContext;
+        }
+
+        public ClienteEntity BuscarPeloLogin(string login)
+        {
+            ClienteEntity ce = _dataBaseContext.Cliente.Single(c => c.Email.Contains(login));
+
+            return ce;
         }
 
         public void InserirCliente(string nome, string email, string cpf, string data, string tipo, string endereco, string descricao, string observacao)
@@ -28,16 +36,25 @@ namespace Atividade1.Models.Cliente
             c.Endereco = endereco;
             c.Descricao = descricao;
             c.TextoObservacao = observacao;
-
-            var cnpj = Guid.Empty;
+            
             if (tipo.Equals("Juridica"))
             {
-                cnpj = new Guid();
+                var cnpj = Guid.NewGuid();
+                c.Cnpj = cnpj;
+            }
+            else
+            {
+                var cnpj = Guid.Empty;
+                c.Cnpj = cnpj;
             }
 
-            c.Cnpj = cnpj;
             c.DataInsercao = DateTime.Now;
             c.DataUltimaModificacao = DateTime.Now;
+
+            if (BuscarPeloLogin(email) != null)
+            {
+                throw new Exception("Login Ja exestente!");
+            }
 
             _dataBaseContext.Cliente.Add(c);
             _dataBaseContext.SaveChanges();
