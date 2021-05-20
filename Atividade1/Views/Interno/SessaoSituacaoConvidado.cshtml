@@ -1,0 +1,58 @@
+﻿@model Atividade1.ViewModels.TipoEvento.TipoEventoViewModel
+
+<h1>Sessão Situação Convidados</h1>
+
+<div class="alert-success" >
+    @if (@Model.MsgSucess != null)
+    {
+        <p style="text-align: center;">@Model.MsgSucess</p>
+    }
+</div>
+
+<div class="alert-danger">
+    @if (@Model.MsgFail != null)
+    {
+        <p style="text-align: center;">@Model.MsgFail</p>
+    }
+</div>
+
+
+<table class="table table-striped">
+   
+     <fieldset>
+        <legend>Cadastro Situação Convidado</legend>
+        <form method="post" asp-action="SessaoSituacaoConvidado" asp-controller="Interno" > 
+            <input type="hidden" name="param" value="cadastrar" />
+            
+            <div class="form-group">
+                <label for="Descricao">Descrição:</label>
+                <input type="text" class="form-control" id="Descricao" name="Descricao" />
+            </div>
+            
+            <div class="form-group">               
+                <button type="submit" class="btn btn-primary" >Salvar</button>
+            </div>
+        </form>
+     </fieldset>
+     <hr/>
+
+     <legend>Situação convidado</legend>    
+     <thead>
+     <tr>
+         <th>Situação</th>
+         <th>Ação 1</th>
+         <th>Ação 2</th>
+     </tr>
+     </thead>
+     <tbody>
+     @foreach(var te in  @Model.ListaTe)
+     {
+         <tr>
+             <td>@te.Tipo</td>
+             <td><a asp-controller="Interno" asp-action="" asp-route-id="@te.Id">Editar</a></td>
+             <td><a asp-controller="Interno" asp-action="" asp-route-id="@te.Id">Excluir</a></td>
+        </tr>
+     }
+     </tbody>
+        
+ </table>

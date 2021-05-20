@@ -7,11 +7,14 @@ using Atividade1.Models.Acesso;
 using Atividade1.Models.Cliente;
 using Atividade1.Models.Evento;
 using Atividade1.Models.Local;
+using Atividade1.Models.Situacao;
 using Atividade1.RequestModel;
 using Atividade1.ViewModels.Acesso;
 using Atividade1.ViewModels.Cliente;
 using Atividade1.ViewModels.Evento;
 using Atividade1.ViewModels.Local;
+using Atividade1.ViewModels.SituacaoConvidado;
+using Atividade1.ViewModels.TipoEvento;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
@@ -25,13 +28,20 @@ namespace Atividade1.Controllers
         private readonly ClienteService _clienteService;
         private readonly LocalService _localService;
         private readonly EventoService _eventoService;
+        private readonly TipoEventoService _tipoEventoService;
+        private readonly SituacaoEventoService _situacaoEventoService;
+        private readonly SituacaoConvidadoService _convidadoService;
 
-        public InternoController(AcessoService acessoService, ClienteService clienteService, LocalService localService, EventoService eventoService)
+
+        public InternoController(AcessoService acessoService, ClienteService clienteService, LocalService localService, EventoService eventoService, TipoEventoService tipoEventoService, SituacaoEventoService situacaoEventoService, SituacaoConvidadoService convidadoService)
         {
             _acessoService = acessoService;
             _clienteService = clienteService;
             _localService = localService;
             _eventoService = eventoService;
+            _tipoEventoService = tipoEventoService;
+            _situacaoEventoService = situacaoEventoService;
+            _convidadoService = convidadoService;
         }
 
         public IActionResult Index()
@@ -769,5 +779,52 @@ namespace Atividade1.Controllers
             return RedirectToAction("SessaoEvento");
         }
 
+        [HttpGet]
+        public IActionResult SessaoTipoEvento()
+        {
+            var viewmodel = new TipoEventoViewModel();
+            viewmodel.MsgSucess = (string) TempData["cad-te"];
+            viewmodel.MsgFail = (string) TempData["cad-te-error"];
+
+            var lista = _tipoEventoService.BuscarTodos();
+
+            foreach (var l in lista)
+            {
+                viewmodel.ListaTe.Add(new TipoEventoEntity()
+                {
+                    Id = l.Id,
+                    Tipo = l.Tipo
+                });
+            }
+            
+            return View(viewmodel);
+        }
+
+        [HttpPost]
+        public IActionResult SessaoTipoEvento(TipoEventoRm rm)
+        {
+
+            var descricao = rm.Descricao;
+            
+            if (descricao == null)
+            {
+                TempData["cad-te-error"] = "Campo descrição deve ser preenchido!";
+                return RedirectToAction("SessaoTipoEvento");
+            }
+
+            _tipoEventoService.inserir(descricao);
+            
+            TempData["cad-te"] = "Tipo Evento Cadastrado com sucesso!";
+            
+            return RedirectToAction("SessaoTipoEvento");          
+  
+        }
+
+        public IActionResult SessaoSituacaoConvidado()
+        {
+            throw new NotImplementedException();
+        }
+
+        
     }
 }

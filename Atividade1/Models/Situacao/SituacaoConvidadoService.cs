@@ -1,4 +1,6 @@
-﻿using Atividade1.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Atividade1.Data;
 
 namespace Atividade1.Models.Situacao
 {
@@ -10,5 +12,11 @@ namespace Atividade1.Models.Situacao
         {
             _dataBaseContext = dataBaseContext;
         }
+        
+        public List<SituacaoConvidadoEntity> buscarTodos()
+        {
+            return _dataBaseContext.SituacaoConvidado.ToList();
+        }
+        
     }
 }
