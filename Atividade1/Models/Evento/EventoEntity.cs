@@ -9,21 +9,21 @@ namespace Atividade1.Models.Evento
     {
         public Guid Id { get; set; }
         
-        public string Descricao { get; set; }
+        public string Descricao { get; set; }//v
         
-        public TipoEventoEntity TipoEvento { get; set; }
+        public TipoEventoEntity TipoEvento { get; set; }//v
 
-        public DateTime DataHoraInicio { get; set; }
+        public DateTime DataHoraInicio { get; set; }//v
 
-        public DateTime DataHoraTermino { get; set; }
+        public DateTime DataHoraTermino { get; set; }//v
 
-        public ClienteEntity Cliente { get; set; }
+        public ClienteEntity Cliente { get; set; }//v
 
-        public SituacaoEventoEntity Situacao { get; set; }
+        public SituacaoEventoEntity Situacao { get; set; }//v
 
-        public LocalEntity Local { get; set; }
+        public LocalEntity Local { get; set; }//fazer
 
-        public string TextoObservacao { get; set; }
+        public string TextoObservacao { get; set; }//v
 
         public DateTime DataInsercao { get; set; }
 

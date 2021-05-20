@@ -1,0 +1,146 @@
+﻿@model Atividade1.ViewModels.Evento.EventoViewModel
+
+<h1>Sessão Evento</h1>
+
+<div class="alert-success" >
+    @if (@Model.MsgSucess != null)
+    {
+        <p style="text-align: center;">@Model.MsgSucess</p>
+    }
+</div>
+
+<div class="alert-danger">
+    @if (@Model.MsgFail != null)
+    {
+        <p style="text-align: center;">@Model.MsgFail</p>
+    }
+</div>
+
+
+<table class="table table-striped">
+   
+     <fieldset>
+        <legend>Cadastro de evento</legend>
+        <form method="post" asp-action="SessaoEvento" asp-controller="Interno" > 
+            <input type="hidden" name="param" value="cadastrar" />
+            
+            <div class="form-group">
+                <label>Cliente: </label>
+                <select name="Cliente" class="form-control">
+                    @foreach (var cl in @Model.Clientes)
+                    {
+                        <option value="@cl.Id" >@cl.Nome</option>
+                    }
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="Descricao">Descrição:</label>
+                <input type="text" class="form-control" id="Descricao" name="Descricao" />
+            </div>
+            
+            <div class="form-group">
+                <label for="TipoEvento">Tipo evento:</label>
+                <input type="text" class="form-control" id="TipoEvento" name="TipoEvento" />
+            </div>
+            
+            <div class="form-group">
+                <label for="SituacaoEvento">Situação evento:</label>
+                <input type="text" class="form-control" id="SituacaoEvento" name="SituacaoEvento" />
+            </div>
+            
+            <div class="form-group">
+                <label for="Observacao">Observação:</label>
+                <input type="text" class="form-control" id="Observacao" name="Observacao" />
+            </div>
+            
+            <div class="form-group">
+                <label for="DataHinicio">Data hora inicio - Formato(01/01/0001 00:00:00): </label>
+                <input type="text" class="form-control" id="DataHinicio" name="DataHinicio" />
+            </div>
+            
+            <div class="form-group">
+                <label for="DataHtermino">Data hora termino - Formato(01/01/0001 00:00:00): </label>
+                <input type="text" class="form-control" id="DataHtermino" name="DataHtermino" />
+            </div>
+
+            <legend>Local</legend>
+            
+            <div class="form-group">
+                <label for="Nome">Nome:</label>
+                <input type="text" class="form-control" id="Nome" name="Nome" />
+            </div>
+            
+            <div class="form-group">
+                <label for="Cidade">Cidade:</label>
+                <input type="text" class="form-control" id="Cidade" name="Cidade" />
+            </div>
+            
+            <div class="form-group">
+                <label for="Bairro">Bairro:</label>
+                <input type="text" class="form-control" id="Bairro" name="Bairro" />
+            </div>
+            
+            <div class="form-group">
+                <label for="Capacidade">Capacidade:</label>
+                <input type="text" class="form-control" id="Capacidade" name="Capacidade" />
+            </div>
+            
+            <div class="form-group">               
+                <button type="submit" class="btn btn-primary" >Salvar</button>
+            </div>
+        </form>
+     </fieldset>
+     <hr/>
+     <fieldset>
+     <legend>Pesquisar:</legend>
+             <form method="POST" asp-action="SessaoBuscaEvento" asp-controller="Interno" > 
+                 <input type="hidden" name="param" value="pesquisar" />
+                 <div class="row">
+                     <div class="col">
+                         <div class="form-group">
+                             <label for="Descricao">Descrição:</label>
+                             <input type="text" class="form-control" id="Descricao" name="Descricao" />
+                         </div>
+                     </div>
+                 </div>
+                 <div class="form-group">               
+                     <button type="submit" class="btn btn-primary" >Buscar</button>
+                 </div>
+             </form>
+     </fieldset>
+     
+     <legend>Eventos</legend>    
+     <thead>
+     <tr>
+         <th>Descrição</th>
+         <th>Tipo Evento</th>
+         <th>Situação Evento</th>
+         <th>Observação</th>
+         <th>Data Hora inicio</th>
+         <th>Data Hora termino</th>
+         <th>Data Inserção</th>
+         <th>Data Alteração</th>
+         <th>Ação 1</th>
+         <th>Ação 2</th>
+     </tr>
+     </thead>
+     <tbody>
+        @foreach (var evento in @Model.Eventos)
+        {
+            <tr>
+                <td>@evento.Descricao</td>
+                <td>@evento.TipoEvento</td>
+                <td>@evento.SituacaoEvento</td>
+                <td>@evento.Observacao</td>
+                <td>@evento.DataHoraInicio</td>
+                <td>@evento.DataHoraTermino</td>
+                <td>@evento.DataInsercao</td>
+                <td>@evento.DataAlteracao</td>
+                <td><a asp-controller="Interno" asp-action="EditarEv" asp-route-id="@evento.Id" >Editar</a></td>
+                <td><a asp-controller="Interno" asp-action="ExcluirEv" asp-route-id="@evento.Id">Excluir</a></td>
+            </tr>
+        }
+     </tbody>
+        
+ </table>

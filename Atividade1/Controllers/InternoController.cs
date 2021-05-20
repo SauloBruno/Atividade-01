@@ -5,10 +5,12 @@ using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Atividade1.Models.Acesso;
 using Atividade1.Models.Cliente;
+using Atividade1.Models.Evento;
 using Atividade1.Models.Local;
 using Atividade1.RequestModel;
 using Atividade1.ViewModels.Acesso;
 using Atividade1.ViewModels.Cliente;
+using Atividade1.ViewModels.Evento;
 using Atividade1.ViewModels.Local;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -22,12 +24,14 @@ namespace Atividade1.Controllers
         private readonly AcessoService _acessoService;
         private readonly ClienteService _clienteService;
         private readonly LocalService _localService;
-        
-        public InternoController(AcessoService acessoService, ClienteService clienteService, LocalService localService)
+        private readonly EventoService _eventoService;
+
+        public InternoController(AcessoService acessoService, ClienteService clienteService, LocalService localService, EventoService eventoService)
         {
             _acessoService = acessoService;
             _clienteService = clienteService;
             _localService = localService;
+            _eventoService = eventoService;
         }
 
         public IActionResult Index()
@@ -307,6 +311,154 @@ namespace Atividade1.Controllers
             return RedirectToAction("SessaoLocal");
         }
         
+        [HttpGet]
+        public IActionResult SessaoEvento()
+        {
+            var p1 = (string)TempData["busca"];
+            var p2 = (string)TempData["descricao"];
+            
+            var listaClientes = _clienteService.ObterClientes();
+            var viewModel = new EventoViewModel();
+            
+            viewModel.MsgSucess = (string) TempData["cad-evento"];
+            viewModel.MsgFail = (string) TempData["cad-evento-error"];
+            
+            foreach (var lc  in listaClientes)
+            {
+                viewModel.Clientes.Add(new Clt()
+                {
+                    Id = lc.Id,
+                    Nome = lc.Nome
+                });
+            }
+
+            List<EventoEntity> lista = null;
+
+            if (p1 != null)
+            {
+                lista = _eventoService.BuscarFiltro(p2);
+            }
+            else
+            {
+                lista = _eventoService.BuscarTodos();   
+            }
+
+            foreach (var ev in lista)
+            {
+                viewModel.Eventos.Add(new Event()
+                {
+                    Id = ev.Id,
+                    Descricao = ev.Descricao,
+                    TipoEvento = ev.TipoEvento.Tipo,
+                    SituacaoEvento = ev.Situacao.Descricao,
+                    Observacao = ev.TextoObservacao,
+                    DataHoraInicio = ev.DataHoraInicio.ToString("dd/MM/yyyy HH:mm:ss "),
+                    DataHoraTermino = ev.DataHoraTermino.ToString("dd/MM/yyyy HH:mm:ss "),
+                    DataInsercao = ev.DataInsercao.ToString("dd/MM/yyyy"),
+                    DataAlteracao = ev.DataUltimaModificacao.ToString("dd/MM/yyyy")
+                });
+            }
+            
+            return View(viewModel);
+        }
+        
+        [HttpPost]
+        public IActionResult SessaoEvento(EventoRequestModel rm)
+        {
+            if (rm.Capacidade == null )
+            {
+                TempData["cad-evento-error"] = "Campo capacidade deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            var clienteid = rm.Cliente;
+            var descricao = rm.Descricao;
+            var tipoEvento = rm.TipoEvento;
+            var situacaoEvento = rm.SituacaoEvento;
+            var observacao = rm.Observacao;
+            var dataHoraInicio = rm.DataHinicio;
+            var dataHoraTermino = rm.DataHtermino;
+            var nome = rm.Nome;
+            var cidade = rm.Cidade;
+            var bairro = rm.Bairro;
+            var capacidade = Int32.Parse(rm.Capacidade);
+            
+            if (descricao == null)
+            {
+                TempData["cad-evento-error"] = "Campo descrição deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (tipoEvento == null)
+            {
+                TempData["cad-evento-error"] = "Campo tipo evento deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (situacaoEvento == null)
+            {
+                TempData["cad-evento-error"] = "Campo situação evento deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (observacao == null)
+            {
+                TempData["cad-evento-error"] = "Campo observação deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (dataHoraInicio == null)
+            {
+                TempData["cad-evento-error"] = "Campo data hora inicio deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (dataHoraTermino == null)
+            {
+                TempData["cad-evento-error"] = "Campo data hora termino deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (nome == null)
+            {
+                TempData["cad-evento-error"] = "Campo nome deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (cidade == null)
+            {
+                TempData["cad-evento-error"] = "Campo Cidade deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (bairro == null)
+            {
+                TempData["cad-evento-error"] = "Campo Bairro/local deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (capacidade == 0)
+            {
+                TempData["cad-evento-error"] = "A capacidade não pode ser 0";
+                return RedirectToAction("SessaoEvento");
+            }
+
+            var ev = _eventoService.BuscarPeloDescricao(descricao);
+
+            if (ev.Descricao != "vazio")
+            {
+                TempData["cad-evento-error"] = "Essa descrição já existe!";
+                return RedirectToAction("SessaoEvento");
+            }
+
+            _eventoService.InserirEvento(clienteid, descricao, tipoEvento, situacaoEvento, observacao,
+                dataHoraInicio, dataHoraTermino, nome, cidade, bairro, capacidade);
+
+            TempData["cad-evento"] = "Evento cadastrado!";
+            
+            return RedirectToAction("SessaoEvento");
+        }
+            
         public IActionResult ExcluirLc(Guid id)
         {
             _localService.Remover(id);   
@@ -328,7 +480,20 @@ namespace Atividade1.Controllers
             return RedirectToAction("SessaoCliente");
 
         }
-        
+
+        [HttpPost]
+        public IActionResult SessaoBuscaEvento(EventoRequestModel rm)
+        {
+
+            var descricao = rm.Descricao;
+
+            TempData["busca"] = "buscar";
+            TempData["descricao"] = descricao;
+
+            return RedirectToAction("SessaoEvento");
+
+        }
+            
         [HttpPost]
         public IActionResult SessaoLocalBusca(LocalRequestModel rm)
         {
@@ -507,12 +672,101 @@ namespace Atividade1.Controllers
             
             return RedirectToAction("SessaoLocal");
         }
+        
+        [HttpGet]
+        public IActionResult EditarEv(Guid id)
+        {
+            var e = _eventoService.BuscarPeloId(id);
+
+            var viewmodel = new EventoEvViewModel();
+            viewmodel.Ee = new EvEdit()
+            {
+                Id = e.Id,
+                Descricao = e.Descricao,
+                TipoEvento = e.TipoEvento.Tipo,
+                SituacaoEvento = e.Situacao.Descricao,
+                Observacao = e.TextoObservacao,
+                DataHoraInicio = e.DataHoraInicio.ToString("dd/MM/yyyy HH:mm:ss "),
+                DataHoraTermino = e.DataHoraTermino.ToString("dd/MM/yyyy HH:mm:ss ")
+            };
             
+            return View(viewmodel);
+        }
+        
+        [HttpPost]
+        public IActionResult EditarEv(EventoRequestModel rm)
+        {
+            var id = rm.param;
+            var descricao = rm.Descricao;
+            var tipoEvento = rm.TipoEvento;
+            var situacaoEvento = rm.SituacaoEvento;
+            var obs = rm.Observacao;
+            var dhInicio = rm.DataHinicio;
+            var dhTermino = rm.DataHtermino;
+            
+            if (descricao == null)
+            {
+                TempData["cad-evento-error"] = "Campo descrição deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (tipoEvento == null)
+            {
+                TempData["cad-evento-error"] = "Campo Tipo evento deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (situacaoEvento == null)
+            {
+                TempData["cad-evento-error"] = "Campo Situação Evento deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (obs == null)
+            {
+                TempData["cad-evento-error"] = "Campo Observação deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (dhInicio == null)
+            {
+                TempData["cad-evento-error"] = "Campo Data Hora Inicio deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            if (dhTermino == null)
+            {
+                TempData["cad-evento-error"] = "Campo Data Hora Termino deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+
+            var evt = _eventoService.BuscarPeloDescricao(descricao);
+
+            if (evt.Descricao != "vazio" && evt.Id.ToString() != id.ToString())
+            {
+                TempData["cad-evento-error"] = "Campo Data Hora Termino deve ser preenchido!";
+                return RedirectToAction("SessaoEvento");
+            }
+            
+            _eventoService.Editar(id, descricao, tipoEvento, situacaoEvento, obs, dhInicio, dhTermino);
+
+            TempData["cad-evento"] = "Evento Editado com sucesso!";
+            
+            return RedirectToAction("SessaoEvento");
+        }
+        
         public IActionResult Excluir(Guid id)
         {
             _clienteService.Remover(id);
             
             return RedirectToAction("SessaoCliente");
+        }
+        
+        public IActionResult ExcluirEv(Guid id)
+        {
+            _eventoService.Remover(id);
+            
+            return RedirectToAction("SessaoEvento");
         }
 
     }
